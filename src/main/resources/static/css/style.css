@@ -1,0 +1,219 @@
+h1 {
+    color: #5f0000;
+}
+
+h2 {
+    color: cadetblue;
+}
+
+img {
+    width: 220px;
+    height: 165px;
+}
+
+img.success {
+    width: 330px;
+    height: 248px;
+}
+
+/* COLUMNS */
+
+* {
+    box-sizing: border-box;
+}
+
+/* Create two unequal columns that floats next to each other */
+.column {
+    float: left;
+    padding: 10px;
+    /*height: 300px; !* Should be removed. Only for demonstration *!*/
+}
+
+.component {
+    width: 30%;
+    /*display: flex; !* botei depois *!*/
+    /*justify-content: center;*/
+}
+
+.component.attribute {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.center {
+    width: 20%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* BUTTON GROUPS */
+
+.btn-group button {
+    background-color: #e0e0e0;
+    border: 1px solid #000000;
+    color: #000000;
+    padding: 10px 10px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+
+    width: 120px;
+}
+
+.btn-group h4 {
+    text-align: center;
+    color: #17277e;
+    width: 120px;
+    margin-bottom: 8px;
+    margin-top: -8px;
+}
+
+.btn-group button.repair {
+    background-color: #ffae8f;
+    font-size: 17px;
+    margin-top: 45px;
+    margin-left: 50px;
+    border-radius: 10px;
+}
+
+div.column.component.repair {
+    width: 20%;
+}
+
+ul {
+    border: 1px solid black;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+ul h4 {
+    margin-top: 5px;
+    text-align: center;
+}
+
+ul li {
+    text-align: center;
+    list-style-position: inside;
+}
+
+.center.repair {
+    width: 4%;
+}
+
+
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.btn-group button:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+}
+
+.btn-group button.userReq  {
+    background-color: #12b3ff; /* Green background */
+}
+
+.btn-group button.propagated  {
+    background-color: #78e300; /* Green background */
+}
+
+.btn-group button.inconsistent  {
+    background-color: #ffe581; /* Green background */
+}
+
+#confirm-row {
+    display: flex;
+    justify-content: center;
+}
+
+.reset + .confirm {
+    margin-left: 10px;
+}
+
+button.confirm.enabled {
+    background-color: #ffab00;
+}
+
+button.confirm {
+    margin-top: 25px;
+    font-size: 17px;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+}
+
+button.reset {
+    margin-top: 25px;
+    font-size: 17px;
+    margin-bottom: 20px;
+    background-color: #e0e0e0;
+    float: right;
+}
+
+/* MODAL STUFF */
+body {font-family: Arial, Helvetica, sans-serif;}
+
+/* The Modal (background) */
+.modal {
+    /*display: none;*/
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;   top: 0;   width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0,0,0);
+    /* Fallback color */
+    background-color: rgba(0,0,0,0.4);
+    /* Black w/ opacity */
+}
+
+.visible {
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* The Close Button */
+.close {
+    color: #262525;
+    background-color: #ffe581;
+    float: right;
+    font-size: 19px;
+    /*font-weight: bold;*/
+}
+
+.close:hover, .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}

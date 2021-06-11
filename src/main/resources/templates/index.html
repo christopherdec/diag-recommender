@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Configurador de Computadores</title>
+    <link rel="stylesheet" th:href="@{css/style.css}">
+</head>
+<body>
+    <div align="center">
+        <h1>Configurador de Computadores</h1>
+    </div>
+    <div align="center">
+        <p>
+            Clique nos botões para selecionar os componentes que deseja para seu computador<br>
+            O botão "confirmar configuração" ficará ativo quando a configuração for válida<br>
+            Para tal, é necessário que pelo menos uma opção de cada componente esteja selecionada<br>
+            Os botões ficam com fundo azul quando são seleções feitas por você, fundo verde quando<br>
+            são seleções calculadas pelo configurador, e fundo amarelo são seleções inconsistentes<br>
+            Não tenha medo de selecioná-las, experimente várias configurações diferentes! <br>
+        </p>
+    </div>
+    <div align="center">
+        <hr>
+    </div>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal" th:classappend="${(conflict ? 'visible' : 'hidden')}">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <form action="/repair?option=0" method="post">
+                <button type="submit" class="close">Voltar</button>
+            </form>
+            <div align="center">
+                <h2>Resolução de Conflitos</h2>
+            </div>
+            <div align="center">
+                <p>
+                    Esta seleção gerou uma situação de conflito, pois alguns componentes são incompatíveis<br>
+                    Para continuar, escolha uma das alternativas de reparo propostas pelo configurador.<br>
+                    A relevância de cada opção é baseada na similaridade da configuração resultante<br>
+                    com as configurações previamente efetuadas por outros usuários do sistema!<br>
+                </p>
+            </div>
+            <div align="center">
+                <hr>
+            </div>
+            <div class="row">
+                <div class="column center repair"></div>
+                <div class="column component repair" th:classappend="${(diagnostics.size() < 1 ? 'hidden' : '')}">
+                        <ul th:if="${diagnostics.size() >= 1}">
+                            <h4 th:inline="text">
+                                Opção 1 - relevância [[${diagnostics.get(0).getRelevance()}]] <br>
+                                remover seleções:
+                            </h4>
+                            <li th:each="req : *{diagnostics.get(0).getPathString()}" th:text="${req}"></li>
+                            <div class="btn-group">
+                                <form action="/repair?option=1" method="post">
+                                    <button type="submit" class="repair">Aplicar</button>
+                                </form>
+                            </div>
+                        </ul>
+                </div>
+                <div class="column center repair"></div>
+                <div class="column component repair" th:classappend="${(diagnostics.size() < 2 ? 'hidden' : '')}">
+                    <ul th:if="${diagnostics.size() >= 2}">
+                        <h4 th:inline="text">
+                            Opção 2 - relevância [[${diagnostics.get(1).getRelevance()}]] <br>
+                            remover seleções:
+                        </h4>
+                        <li th:each="req : *{diagnostics.get(1).getPathString()}" th:text="${req}"></li>
+                        <div class="btn-group">
+                            <form action="/repair?option=2" method="post">
+                                <button type="submit" class="repair">Aplicar</button>
+                            </form>
+                        </div>
+                    </ul>
+                </div>
+                <div class="column center repair"></div>
+                <div class="column component repair" th:classappend="${(diagnostics.size() < 3 ? 'hidden' : '')}">
+                    <ul th:if="${diagnostics.size() >= 3}">
+                        <h4 th:inline="text">
+                            Opção 3 - relevância [[${diagnostics.get(2).getRelevance()}]] <br>
+                            remover seleções:
+                        </h4>
+                        <li th:each="req : *{diagnostics.get(2).getPathString()}" th:text="${req}"></li>
+                        <div class="btn-group">
+                            <form action="/repair?option=3" method="post">
+                                <button type="submit" class="repair">Aplicar</button>
+                            </form>
+                        </div>
+                    </ul>
+                </div>
+                <div class="column center repair"></div>
+                <div class="column component repair" th:classappend="${(diagnostics.size() < 4 ? 'hidden' : '')}">
+                    <ul th:if="${diagnostics.size() >= 4}">
+                        <h4 th:inline="text">
+                            Opção 4 - relevância [[${diagnostics.get(3).getRelevance()}]] <br>
+                            remover seleções:
+                        </h4>
+                        <li th:each="req : *{diagnostics.get(3).getPathString()}" th:text="${req}"></li>
+                        <div class="btn-group">
+                            <form action="/repair?option=4" method="post">
+                                <button type="submit" class="repair">Aplicar</button>
+                            </form>
+                        </div>
+                    </ul>
+                </div>
+                <div class="column center repair"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="column center"></div>
+        <div class="column component attribute">
+            <div th:align="center">
+                <img th:src="@{images/usodesenvolvimento.jpg}" alt="uso">
+            </div>
+            <div class="btn-group">
+                <h4>uso</h4>
+                <form action="/update?name=uso&value=1" method="post">
+                    <button type="submit" th:classappend="${(computer.isUserRequirement('uso', 1) ? 'userReq' : '') +
+                    (computer.isInconsistent('uso', 1) ? 'inconsistent' : '') +
+                    (computer.isPropagationResult('uso', 1) ? 'propagated' : '')}">básico</button>
+                </form>
+                <form action="/update?name=uso&value=2" method="post">
+                    <button type="submit" th:classappend="${(computer.isUserRequirement('uso', 2) ? 'userReq' : '') +
+                    (computer.isInconsistent('uso', 2) ? 'inconsistent' : '') +
+                    (computer.isPropagationResult('uso', 2) ? 'propagated' : '')}">desenvolvimento</button>
+                </form>
+                <form action="/update?name=uso&value=3" method="post">
+                    <button type="submit" th:classappend="${(computer.isUserRequirement('uso', 3) ? 'userReq' : '') +
+                    (computer.isInconsistent('uso', 3) ? 'inconsistent' : '') +
+                    (computer.isPropagationResult('uso', 3) ? 'propagated' : '')}">games</button>
+                </form>
+            </div>
+        </div>
+        <div class="column component attribute">
+            <div>
+                <img th:src="@{images/gabinetegamer.jpeg}" alt="gabinete">
+            </div>
+            <div class="btn-group">
+                <h4>gabinete</h4>
+                <form action="/update?name=gabinete&value=1" method="post">
+                    <button type="submit" th:classappend="${(computer.isUserRequirement('gabinete', 1) ? 'userReq' : '') +
+                    (computer.isInconsistent('gabinete', 1) ? 'inconsistent' : '') +
+                    (computer.isPropagationResult('gabinete', 1) ? 'propagated' : '')}">mini</button>
+                </form>
+                <form action="/update?name=gabinete&value=2" method="post">
+                    <button type="submit" th:classappend="${(computer.isUserRequirement('gabinete', 2) ? 'userReq' : '') +
+                    (computer.isInconsistent('gabinete', 2) ? 'inconsistent' : '') +
+                    (computer.isPropagationResult('gabinete', 2) ? 'propagated' : '')}">desktop</button>
+                </form>
+                <form action="/update?name=gabinete&value=3" method="post">
+                    <button type="submit" th:classappend="${(computer.isUserRequirement('gabinete', 3) ? 'userReq' : '') +
+                    (computer.isInconsistent('gabinete', 3) ? 'inconsistent' : '') +
+                    (computer.isPropagationResult('gabinete', 3) ? 'propagated' : '')}">gamer</button>
+                </form>
+            </div>
+        </div>
+        <div class="column center"></div>
+    </div>
+    <div align="center">
+        <hr>
+    </div>
+    <div class="row">
+        <div class="column center"></div>
+        <div class="column component attribute">
+            <div th:align="center">
+                <img th:src="@{images/processadorquadcore.jpg}" alt="processador">
+            </div>
+            <div class="btn-group">
+                <h4>processador</h4>
+                <form action="/update?name=processador&value=1" method="post">
+                    <button type="submit" th:classappend="${(computer.isUserRequirement('processador', 1) ? 'userReq' : '') +
+                    (computer.isInconsistent('processador', 1) ? 'inconsistent' : '') +
+                    (computer.isPropagationResult('processador', 1) ? 'propagated' : '')}">dual-core</button>
+                </form>
+                <form action="/update?name=processador&value=2" method="post">
+                    <button type="submit" th:classappend="${(computer.isUserRequirement('processador', 2) ? 'userReq' : '') +
+                    (computer.isInconsistent('processador', 2) ? 'inconsistent' : '') +
+                    (computer.isPropagationResult('processador', 2) ? 'propagated' : '')}">quad-core</button>
+                </form>
+            </div>
+        </div>
+        <div class="column component attribute">
+            <div>
+                <img th:src="@{images/memoria16gb.jpg}" alt="memoria">
+            </div>
+            <div class="btn-group">
+                <h4>memória</h4>
+                <form action="/update?name=memoria&value=1" method="post">
+                    <button type="submit" th:classappend="${(computer.isUserRequirement('memoria', 1) ? 'userReq' : '') +
+                    (computer.isInconsistent('memoria', 1) ? 'inconsistent' : '') +
+                    (computer.isPropagationResult('memoria', 1) ? 'propagated' : '')}">4GB</button>
+                </form>
+                <form action="/update?name=memoria&value=2" method="post">
+                    <button type="submit" th:classappend="${(computer.isUserRequirement('memoria', 2) ? 'userReq' : '') +
+                    (computer.isInconsistent('memoria', 2) ? 'inconsistent' : '') +
+                    (computer.isPropagationResult('memoria', 2) ? 'propagated' : '')}">8GB</button>
+                </form>
+                <form action="/update?name=memoria&value=3" method="post">
+                    <button type="submit" th:classappend="${(computer.isUserRequirement('memoria', 3) ? 'userReq' : '') +
+                    (computer.isInconsistent('memoria', 3) ? 'inconsistent' : '') +
+                    (computer.isPropagationResult('memoria', 3) ? 'propagated' : '')}">16GB</button>
+                </form>
+            </div>
+        </div>
+        <div class="column center"></div>
+    </div>
+    <div align="center">
+        <hr>
+    </div>
+    <div class="row">
+        <div class="column center"></div>
+        <div class="column component attribute">
+            <div th:align="center">
+                <img th:src="@{images/driveoptico.jpg}" alt="drive óptico">
+            </div>
+            <div class="btn-group">
+                <h4>drive óptico</h4>
+                <form action="/update?name=driveOptico&value=0" method="post">
+                    <button type="submit" th:classappend="${(computer.isUserRequirement('driveOptico', 0) ? 'userReq' : '') +
+                    (computer.isInconsistent('driveOptico', 0) ? 'inconsistent' : '') +
+                    (computer.isPropagationResult('driveOptico', 0) ? 'propagated' : '')}">não</button>
+                </form>
+                <form action="/update?name=driveOptico&value=1" method="post">
+                    <button type="submit" th:classappend="${(computer.isUserRequirement('driveOptico', 1) ? 'userReq' : '') +
+                    (computer.isInconsistent('driveOptico', 1) ? 'inconsistent' : '') +
+                    (computer.isPropagationResult('driveOptico', 1) ? 'propagated' : '')}">sim</button>
+                </form>
+            </div>
+        </div>
+        <div class="column component attribute">
+            <div>
+                <img th:src="@{images/placavideo.jpg}" alt="placa de vídeo">
+            </div>
+            <div class="btn-group">
+                <h4>placa de vídeo</h4>
+                <form action="/update?name=placaVideo&value=0" method="post">
+                    <button type="submit" th:classappend="${(computer.isUserRequirement('placaVideo', 0) ? 'userReq' : '') +
+                    (computer.isInconsistent('placaVideo', 0) ? 'inconsistent' : '') +
+                    (computer.isPropagationResult('placaVideo', 0) ? 'propagated' : '')}">não</button>
+                </form>
+                <form action="/update?name=placaVideo&value=1" method="post">
+                    <button type="submit" th:classappend="${(computer.isUserRequirement('placaVideo', 1) ? 'userReq' : '') +
+                    (computer.isInconsistent('placaVideo', 1) ? 'inconsistent' : '') +
+                    (computer.isPropagationResult('placaVideo', 1) ? 'propagated' : '')}">sim</button>
+                </form>
+            </div>
+        </div>
+        <div class="column center"></div>
+    </div>
+    <div align="center">
+        <hr>
+    </div>
+    <div class="row">
+        <div class="column center"></div>
+        <div class="column component attribute">
+            <div th:align="center">
+                <img th:src="@{images/hdd.PNG}" alt="HDD">
+            </div>
+            <div class="btn-group">
+                <h4>HDD</h4>
+                <form action="/update?name=hdd&value=0" method="post">
+                    <button type="submit" th:classappend="${(computer.isUserRequirement('hdd', 0) ? 'userReq' : '') +
+                    (computer.isInconsistent('hdd', 0) ? 'inconsistent' : '') +
+                    (computer.isPropagationResult('hdd', 0) ? 'propagated' : '')}">não</button>
+                </form>
+                <form action="/update?name=hdd&value=1" method="post">
+                    <button type="submit" th:classappend="${(computer.isUserRequirement('hdd', 1) ? 'userReq' : '') +
+                    (computer.isInconsistent('hdd', 1) ? 'inconsistent' : '') +
+                    (computer.isPropagationResult('hdd', 1) ? 'propagated' : '')}">sim</button>
+                </form>
+            </div>
+        </div>
+        <div class="column component attribute">
+            <div>
+                <img th:src="@{images/ssd.jpg}" alt="SSD">
+            </div>
+            <div class="btn-group">
+                <h4>SSD</h4>
+                <form action="/update?name=ssd&value=0" method="post">
+                    <button type="submit" th:classappend="${(computer.isUserRequirement('ssd', 0) ? 'userReq' : '') +
+                    (computer.isInconsistent('ssd', 0) ? 'inconsistent' : '') +
+                    (computer.isPropagationResult('ssd', 0) ? 'propagated' : '')}">não</button>
+                </form>
+                <form action="/update?name=ssd&value=1" method="post">
+                    <button type="submit" th:classappend="${(computer.isUserRequirement('ssd', 1) ? 'userReq' : '') +
+                    (computer.isInconsistent('ssd', 1) ? 'inconsistent' : '') +
+                    (computer.isPropagationResult('ssd', 1) ? 'propagated' : '')}">sim</button>
+                </form>
+            </div>
+        </div>
+        <div class="column center"></div>
+    </div>
+    <div align="center">
+        <hr>
+    </div>
+    <div id="confirm-row">
+        <div>
+            <form action="/reset" method="post">
+                <button id="resetButton" type="submit" class="confirm">Reiniciar Configuração</button>
+            </form>
+        </div>
+        <div>
+            <form action="/success" method="post">
+                <button id="confirmButton" type="submit" class="confirm" th:disabled="${!computer.isComplete()}"
+                        th:classappend="${(computer.isComplete() ? 'enabled' : '')}">Confirmar Configuração</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        localStorage.yscroll = localStorage.yscroll || 0;
+        window.scrollBy(0, localStorage.yscroll);
+
+        document.getElementById("confirmButton").onclick = () => localStorage.resetPosition = "true";
+        document.getElementById("resetButton").onclick = () => localStorage.resetPosition = "true";
+
+        window.addEventListener("beforeunload", () => {
+            localStorage.yscroll = (localStorage.resetPosition === "true") ? 0 : window.pageYOffset;
+            localStorage.resetPosition = undefined;
+        });
+    </script>
+</body>
+</html>

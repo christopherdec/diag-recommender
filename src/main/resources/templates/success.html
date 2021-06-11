@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Configurador de Computadores</title>
+    <link rel="stylesheet" th:href="@{css/style.css}">
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 300px;
+            margin-left:auto;
+            margin-right:auto
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+    <div align="center">
+        <h1>Configuração bem-sucedida!</h1>
+        <img class="success" th:src="@{images/maintenance.jpg}" alt="success">
+        <p>
+            Sua configuração foi finalizada e salva com sucesso em nosso banco de dados<br>
+            Obrigado por contribuir com nossos testes. Caso queira realizar outra configuração,<br>
+            clique no botão abaixo. A configuração que acabou de fazer será considerada na hora de<br>
+            calcular a recomendação de diagnósticos, caso um estado de inconsistência seja atingido.<br>
+        </p>
+    </div>
+    <h2 style="color: #262525" align="center">Bill of Materials</h2>
+    <table>
+        <tr>
+            <th>Componente</th>
+            <th>Valor</th>
+        </tr>
+        <tr>
+            <td>Id</td>
+            <td th:text="${computer.getId()}"></td>
+        </tr>
+        <tr>
+            <td>Uso</td>
+            <td th:text="${computer.getUsoString()}"></td>
+        </tr>
+        <tr>
+            <td>Gabinete</td>
+            <td th:text="${computer.getGabineteString()}"></td>
+        </tr>
+        <tr>
+            <td>Processador</td>
+            <td th:text="${computer.getProcessadorString()}"></td>
+        </tr>
+        <tr>
+            <td>Drive óptico</td>
+            <td th:text="${computer.getDriveOpticoString()}"></td>
+        </tr>
+        <tr>
+            <td>Placa de vídeo</td>
+            <td th:text="${computer.getPlacaVideoString()}"></td>
+
+        </tr>
+        <tr>
+            <td>Memória</td>
+            <td th:text="${computer.getMemoriaString()}"></td>
+        </tr>
+        <tr>
+            <td>HDD</td>
+            <td th:text="${computer.getHddString()}"></td>
+        </tr>
+        <tr>
+            <td>SSD</td>
+            <td th:text="${computer.getSsdString()}"></td>
+        </tr>
+    </table>
+    <div align="center" style="height: 120px">
+        <form action="/reset" method="post">
+            <button type="submit" class="confirm enabled">Criar nova configuração</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Configurador de Computadores</title>
+    <style>
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        h2 {
+            color: #ffab00;
+        }
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 60%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: center;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+    <h2 align="center">Base de Configurações</h2>
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Uso</th>
+            <th>Gabinete</th>
+            <th>Processador</th>
+            <th>Drive óptico</th>
+            <th>Placa de vídeo</th>
+            <th>Memória</th>
+            <th>HDD</th>
+            <th>SSD</th>
+            <th>Replicações</th>
+        </tr>
+        <tr th:each="computer : ${computers}">
+            <td th:text="${computer.getId()}"></td>
+            <td th:text="${computer.getUsoString()}"></td>
+            <td th:text="${computer.getGabineteString()}"></td>
+            <td th:text="${computer.getProcessadorString()}"></td>
+            <td th:text="${computer.getDriveOpticoString()}"></td>
+            <td th:text="${computer.getPlacaVideoString()}"></td>
+            <td th:text="${computer.getMemoriaString()}"></td>
+            <td th:text="${computer.getHddString()}"></td>
+            <td th:text="${computer.getSsdString()}"></td>
+            <td style="text-align: center" th:text="${computer.getReplicacoesString()}"></td>
+        </tr>
+    </table>
+</body>
+</html>
