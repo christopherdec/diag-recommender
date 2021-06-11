@@ -20,6 +20,8 @@ public class ConfigurationController {
 
     private boolean conflict = false;
 
+    private boolean restrictionScreen = false;
+
     private List<Diagnostic> diagnostics = new ArrayList<>();
 
     @Autowired
@@ -30,6 +32,7 @@ public class ConfigurationController {
         model.addAttribute("computer", new ComputerModel());
         model.addAttribute("conflict", conflict);
         model.addAttribute("diagnostics", diagnostics);
+        model.addAttribute("restriction", restrictionScreen);
         return "index";
     }
 
@@ -66,6 +69,12 @@ public class ConfigurationController {
     public String base(Model model) {
         model.addAttribute("computers", configurationService.getConfigurations());
         return "base";
+    }
+
+    @PostMapping("/restriction")
+    public String restriction() {
+        restrictionScreen = !restrictionScreen;
+        return "redirect:/";
     }
 
 }

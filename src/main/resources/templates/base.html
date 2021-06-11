@@ -27,6 +27,22 @@
         tr:nth-child(even) {
             background-color: #dddddd;
         }
+
+        div.go-back {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .go-back button {
+            margin-top: 25px;
+            font-size: 17px;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: inline-block;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -57,5 +73,10 @@
             <td style="text-align: center" th:text="${computer.getReplicacoesString()}"></td>
         </tr>
     </table>
+    <div class="go-back">
+        <form action="/" method="get">
+            <button type="submit">Voltar</button>
+        </form>
+    </div>
 </body>
 </html>

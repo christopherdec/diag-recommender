@@ -10,7 +10,7 @@
     <div align="center">
         <h1>Configurador de Computadores</h1>
     </div>
-    <div align="center">
+    <div class="info-group">
         <p>
             Clique nos botões para selecionar os componentes que deseja para seu computador<br>
             O botão "confirmar configuração" ficará ativo quando a configuração for válida<br>
@@ -19,14 +19,35 @@
             são seleções calculadas pelo configurador, e fundo amarelo são seleções inconsistentes<br>
             Não tenha medo de selecioná-las, experimente várias configurações diferentes! <br>
         </p>
+        <div>
+            <h4>info</h4>
+            <form action="/restriction" method="post">
+                <button type="submit">restrições</button>
+            </form>
+            <form action="/base" method="get">
+                <button type="submit">base</button>
+            </form>
+        </div>
     </div>
     <div align="center">
         <hr>
     </div>
 
-    <!-- The Modal -->
-    <div id="myModal" class="modal" th:classappend="${(conflict ? 'visible' : 'hidden')}">
-        <!-- Modal content -->
+    <div id="restrictionModal" class="modal" th:classappend="${(restriction ? 'visible' : 'hidden')}">
+        <div class="modal-content restriction">
+            <form action="/restriction" method="post">
+                <button type="submit" class="close">Voltar</button>
+            </form>
+            <div align="center">
+                <h2>Restrições da base de conhecimento</h2>
+            </div>
+            <div align="center">
+                <img class="restrictions" th:src="@{images/ckb.PNG}" alt="restrições">
+            </div>
+        </div>
+    </div>
+
+    <div id="conflictModal" class="modal" th:classappend="${(conflict ? 'visible' : 'hidden')}">
         <div class="modal-content">
             <form action="/repair?option=0" method="post">
                 <button type="submit" class="close">Voltar</button>
