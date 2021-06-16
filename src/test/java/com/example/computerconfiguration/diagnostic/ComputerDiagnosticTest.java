@@ -254,19 +254,4 @@ public class ComputerDiagnosticTest {
         assertFalse(diagnoses.isEmpty());
     }
 
-    @Test
-    public void testim() throws Throwable {
-        gabinete.eq(2).post();
-        processador.eq(2).post();
-        memoria.eq(1).post();
-
-        solver.propagate();
-
-        System.out.println(memoria.getLB() + " " + memoria.getUB());
-        System.out.println(uso.getLB() + " " + uso.getUB());
-
-    }
-
-    // @TODO: teste para verificar quantidade de duas configurações
-
 }
