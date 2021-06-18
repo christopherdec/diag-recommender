@@ -1,6 +1,6 @@
 package com.example.computerconfiguration.base;
 
-import com.example.computerconfiguration.domain.Configuration;
+import com.example.computerconfiguration.domain.CompleteConfiguration;
 import com.example.computerconfiguration.domain.ConfigurationModel;
 
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface ConfigurationLoader {
 
-    List<? extends Configuration> getConfigurations();
+    List<? extends CompleteConfiguration> getConfigurations();
 
     ConfigurationModel getDomainClass();
 }

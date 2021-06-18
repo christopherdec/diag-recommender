@@ -2,7 +2,7 @@ package com.example.computerconfiguration.diagnostic;
 
 import com.example.computerconfiguration.base.ConfigurationLoader;
 import com.example.computerconfiguration.domain.AttributeInfo;
-import com.example.computerconfiguration.domain.Configuration;
+import com.example.computerconfiguration.domain.CompleteConfiguration;
 import com.example.computerconfiguration.domain.ConfigurationModel;
 import com.example.computerconfiguration.domain.car.Car;
 import com.example.computerconfiguration.domain.computer.Computer;
@@ -20,7 +20,7 @@ public class SimilarityTable {
     // defines if should print the similarity values (construction mode) or the attribute names
     private static final boolean CONSTRUCTION_MODE = false;
 
-    private static List<? extends Configuration> configurations;
+    private static List<? extends CompleteConfiguration> configurations;
 
     public SimilarityTable(List<Constraint> userRequirements, ConfigurationLoader loader) throws
             NoSuchFieldException, IllegalAccessException {
@@ -29,7 +29,7 @@ public class SimilarityTable {
         configurations = loader.getConfigurations();
 
         // loads info about name, min/max values and weight about the domain class attributes
-        Map<String, AttributeInfo> attributeInfo = Configuration.getAttributeInfo();
+        Map<String, AttributeInfo> attributeInfo = CompleteConfiguration.getAttributeInfo();
 
         // loades the choco model version of the domain class
         ConfigurationModel configurationModel = loader.getDomainClass();
@@ -45,7 +45,7 @@ public class SimilarityTable {
         int session = 1;
         String identation = " ";
 
-        for (Configuration configuration : configurations) {
+        for (CompleteConfiguration configuration : configurations) {
 
             totalSimilarity = 0;
 
@@ -78,7 +78,7 @@ public class SimilarityTable {
     @SneakyThrows
     public double getMaxSimilarityValue(List<Constraint> path) {
         // creates a copy of the configurations, to be consumed in this query
-        List<Configuration> filteredConfigurations = new ArrayList<>(configurations);
+        List<CompleteConfiguration> filteredConfigurations = new ArrayList<>(configurations);
 
         path.forEach(constraint -> {
             String attribute = extractAttribute(constraint).getKey();
@@ -97,7 +97,7 @@ public class SimilarityTable {
         });
         // from the filtered configurations, returns the max similarity value found (or 0 if table is empty)
         try {
-            return Collections.max(filteredConfigurations, Comparator.comparing(Configuration::getSimilarity)).getSimilarity();
+            return Collections.max(filteredConfigurations, Comparator.comparing(CompleteConfiguration::getSimilarity)).getSimilarity();
         } catch (NoSuchElementException e) {
             return 0d;
         }

@@ -1,7 +1,7 @@
 package com.example.computerconfiguration.domain.computer;
 
-import com.example.computerconfiguration.domain.AttributeInfo;
-import com.example.computerconfiguration.domain.Configuration;
+import com.example.computerconfiguration.diagnostic.AttributeInfo;
+import com.example.computerconfiguration.domain.CompleteConfiguration;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,45 +9,43 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.HashMap;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-public class Computer extends Configuration {
+public class Computer extends CompleteConfiguration {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private long id;
 
+    @AttributeInfo(metric = "EIB", weight = 0.125)
     public int uso;
+
+    @AttributeInfo(metric = "EIB", weight = 0.125)
     public int gabinete;
+
+    @AttributeInfo(metric = "EIB", weight = 0.125)
     public int processador;
+
+    @AttributeInfo(metric = "EIB", weight = 0.125)
     public int driveOptico;
+
+    @AttributeInfo(metric = "EIB", weight = 0.125)
     public int placaVideo;
+
+    @AttributeInfo(metric = "EIB", weight = 0.125)
     public int memoria;
+
+    @AttributeInfo(metric = "EIB", weight = 0.125)
     public int hdd;
+
+    @AttributeInfo(metric = "EIB", weight = 0.125)
     public int ssd;
 
-    // número de quantas vezes a configuração foi efetuada
-    public int replicacoes = 1;
-
-    private static final HashMap<String, AttributeInfo> attributeInfo = new HashMap<>();
-
-    static {
-        attributeInfo.put("uso", new AttributeInfo(0.125, "EIB"));
-        attributeInfo.put("gabinete", new AttributeInfo(0.125, "EIB"));
-        attributeInfo.put("processador", new AttributeInfo(0.125, "EIB"));
-        attributeInfo.put("driveOptico", new AttributeInfo(0.125, "EIB"));
-        attributeInfo.put("placaVideo", new AttributeInfo(0.125, "EIB"));
-        attributeInfo.put("memoria", new AttributeInfo(0.125, "EIB"));
-        attributeInfo.put("hdd", new AttributeInfo(0.125, "EIB"));
-        attributeInfo.put("ssd", new AttributeInfo(0.125, "EIB"));
-    }
-
     public Computer(List<Integer> componentes) {
-        super(attributeInfo);
+        super(componentes.get(8));
         this.uso = componentes.get(0);
         this.gabinete = componentes.get(1);
         this.processador = componentes.get(2);
@@ -56,11 +54,10 @@ public class Computer extends Configuration {
         this.memoria = componentes.get(5);
         this.hdd = componentes.get(6);
         this.ssd = componentes.get(7);
-        this.replicacoes = componentes.get(8);
     }
 
     public Computer() {
-        super(attributeInfo);
+
     }
 
     @Override
@@ -74,6 +71,7 @@ public class Computer extends Configuration {
                 ", memoria=" + memoria +
                 ", hdd=" + hdd +
                 ", ssd=" + ssd +
+                ", replicacoes=" + getReplications() +
                 '}';
     }
 
@@ -202,11 +200,6 @@ public class Computer extends Configuration {
         return valueStr;
     }
 
-    // used by Thymeleaf
-    public String getReplicacoesString() {
-        return String.valueOf(replicacoes);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -215,10 +208,6 @@ public class Computer extends Configuration {
         return uso == computer.uso && gabinete == computer.gabinete && processador == computer.processador &&
                 driveOptico == computer.driveOptico && placaVideo == computer.placaVideo && memoria == computer.memoria
                 && hdd == computer.hdd && ssd == computer.ssd;
-    }
-
-    public void addReplicacao() {
-        replicacoes++;
     }
 
 }

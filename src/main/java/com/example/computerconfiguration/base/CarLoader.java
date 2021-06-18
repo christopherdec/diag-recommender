@@ -1,6 +1,6 @@
 package com.example.computerconfiguration.base;
 
-import com.example.computerconfiguration.domain.Configuration;
+import com.example.computerconfiguration.domain.CompleteConfiguration;
 import com.example.computerconfiguration.domain.car.Car;
 import com.example.computerconfiguration.domain.car.CarModel;
 
@@ -26,7 +26,7 @@ public class CarLoader implements ConfigurationLoader{
         return instance;
     }
 
-    public List<? extends Configuration> getConfigurations() {
+    public List<? extends CompleteConfiguration> getConfigurations() {
         List<Car> cars = new ArrayList<>();
         cars.add(new Car(1, 4, 0, 0, 1));
         cars.add(new Car(1, 4, 0, 0, 0));

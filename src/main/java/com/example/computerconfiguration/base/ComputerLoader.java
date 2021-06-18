@@ -1,6 +1,6 @@
 package com.example.computerconfiguration.base;
 
-import com.example.computerconfiguration.domain.Configuration;
+import com.example.computerconfiguration.domain.CompleteConfiguration;
 import com.example.computerconfiguration.domain.ConfigurationModel;
 import com.example.computerconfiguration.domain.computer.Computer;
 import com.example.computerconfiguration.domain.computer.ComputerModel;
@@ -39,7 +39,7 @@ public class ComputerLoader implements ConfigurationLoader {
         return instance;
     }
 
-    public List<? extends Configuration> getConfigurations() {
+    public List<? extends CompleteConfiguration> getConfigurations() {
 
         return ComputerBase.base;
     }
