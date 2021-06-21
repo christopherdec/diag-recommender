@@ -56,7 +56,7 @@ public class ConfigurationService {
         Optional<Computer> found = ComputerBase.contains(computer);
         if (found.isPresent()) {
             computer = found.get();
-            computer.addReplicacao();
+            computer.addReplication();
         }
         computerRepository.save(computer);
         computerBase.update();

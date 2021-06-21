@@ -1,6 +1,6 @@
 package com.example.computerconfiguration.domain.computer;
 
-import com.example.computerconfiguration.domain.ConfigurationModel;
+import com.example.computerconfiguration.domain.SolverModel;
 import com.example.computerconfiguration.exception.IncompleteConfigurationException;
 import com.example.computerconfiguration.diagnostic.ConstraintWrapper;
 import org.chocosolver.solver.Model;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
-public class ComputerModel implements ConfigurationModel {
+public class ComputerModel extends SolverModel {
 
     public static final List<String> attributeNames = Arrays.asList("uso", "gabinete", "processador", "driveOptico",
             "placaVideo", "memoria", "hdd", "ssd");

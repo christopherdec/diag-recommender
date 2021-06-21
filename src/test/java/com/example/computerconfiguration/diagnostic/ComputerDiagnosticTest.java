@@ -178,16 +178,16 @@ public class ComputerDiagnosticTest {
         Constraint c4 = driveOptico.eq(TRUE).decompose();
 
         List<Constraint> userRequirements = Arrays.asList(c1, c2, c3, c4);
-        SimilarityTable similarityTable = new SimilarityTable(userRequirements, ComputerLoader.getInstance());
+        ConfigurationBase configurationBase = new ConfigurationBase(userRequirements, ComputerLoader.getInstance());
 
-        assertEquals(0.375, similarityTable.getMaxSimilarityValue(new ArrayList<>()));
-        assertEquals(0.375, similarityTable.getMaxSimilarityValue(Collections.singletonList(c1)));
-        assertEquals(0.25, similarityTable.getMaxSimilarityValue(Collections.singletonList(c2)));
-        assertEquals(0.25, similarityTable.getMaxSimilarityValue(Collections.singletonList(c3)));
-        assertEquals(0.25, similarityTable.getMaxSimilarityValue(Collections.singletonList(c4)));
-        assertEquals(0.125, similarityTable.getMaxSimilarityValue(Arrays.asList(c1, c2)));
-        assertEquals(0.125, similarityTable.getMaxSimilarityValue(Arrays.asList(c1, c2, c3)));
-        assertEquals(0, similarityTable.getMaxSimilarityValue(Arrays.asList(c1, c2, c3, c4)));
+        assertEquals(0.375, configurationBase.maxSimilarityQuery(new ArrayList<>()));
+        assertEquals(0.375, configurationBase.maxSimilarityQuery(Collections.singletonList(c1)));
+        assertEquals(0.25, configurationBase.maxSimilarityQuery(Collections.singletonList(c2)));
+        assertEquals(0.25, configurationBase.maxSimilarityQuery(Collections.singletonList(c3)));
+        assertEquals(0.25, configurationBase.maxSimilarityQuery(Collections.singletonList(c4)));
+        assertEquals(0.125, configurationBase.maxSimilarityQuery(Arrays.asList(c1, c2)));
+        assertEquals(0.125, configurationBase.maxSimilarityQuery(Arrays.asList(c1, c2, c3)));
+        assertEquals(0, configurationBase.maxSimilarityQuery(Arrays.asList(c1, c2, c3, c4)));
     }
 
     @Test

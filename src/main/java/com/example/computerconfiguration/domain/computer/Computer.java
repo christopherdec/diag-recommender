@@ -3,17 +3,14 @@ package com.example.computerconfiguration.domain.computer;
 import com.example.computerconfiguration.diagnostic.AttributeInfo;
 import com.example.computerconfiguration.domain.CompleteConfiguration;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Computer extends CompleteConfiguration {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,7 +54,6 @@ public class Computer extends CompleteConfiguration {
     }
 
     public Computer() {
-
     }
 
     @Override
@@ -210,4 +206,9 @@ public class Computer extends CompleteConfiguration {
                 && hdd == computer.hdd && ssd == computer.ssd;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, uso, gabinete, processador, driveOptico, placaVideo, memoria, hdd, ssd,
+                super.getReplications());
+    }
 }

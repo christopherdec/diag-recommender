@@ -52,6 +52,7 @@ public class PDiag {
         int conflictNumber = 1;
         List<Constraint> conflictSet = QuickXplain.getInstance(model, auxiliaryConstraints)
                                             .qx(backgroundConstraints, userRequirements);
+        System.out.printf("Conflict Set %d: %s\n", conflictNumber++, conflictSet);
         if (withRecommendation) {
             advisor = new PDiagAdvisor(userRequirements);
             pathQueue = new PriorityQueue<>(advisor);
@@ -60,19 +61,13 @@ public class PDiag {
         } else {
             pathQueue = conflictSet.stream().map(Arrays::asList).collect(Collectors.toCollection(LinkedList::new));
         }
-        System.out.printf("Conflict Set %d: %s\n", conflictNumber++, conflictSet);
-
         while (!pathQueue.isEmpty()) {
 
             if(diagnosticNumber > maxDiagnosis) { break; }
 
             List<Constraint> path = pathQueue.poll();
 
-            if (withRecommendation) {
-                System.out.printf("Selected path: not{ %s }, similarity = %.3f\n", path, advisor.getMaxSimilarityValue(path));
-            } else {
-                System.out.printf("Selected path: not{ %s }\n", path);
-            }
+            System.out.printf("Selected path: not{ %s }\n", path);
 
             List<Constraint> testConstraintsMinusPath = userRequirements.stream().filter(c -> !path.contains(c)).collect(Collectors.toList());
             conflictSet = QuickXplain.getInstance(model, auxiliaryConstraints).qx(backgroundConstraints, testConstraintsMinusPath);

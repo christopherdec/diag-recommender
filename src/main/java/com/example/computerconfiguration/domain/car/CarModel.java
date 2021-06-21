@@ -1,12 +1,12 @@
 package com.example.computerconfiguration.domain.car;
 
-import com.example.computerconfiguration.domain.ConfigurationModel;
+import com.example.computerconfiguration.domain.SolverModel;
 import org.chocosolver.solver.constraints.Constraint;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class CarModel implements ConfigurationModel {
+public class CarModel extends SolverModel {
 
     public CarModel() {
     }

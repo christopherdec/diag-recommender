@@ -1,16 +1,41 @@
 package com.example.computerconfiguration.diagnostic;
 
-import com.example.computerconfiguration.domain.AttributeInfo;
-
 import java.util.Map;
 
 /**
- * Utility class which provides the similarity metrics for
- * attribute-level similarity calculation
+ * Static attribute-level similarity metrics for use during the construction of the similarity table.
+ * Based on:
+ * Atas, M. et al - "Towards Similarity-Aware Constraint-Based Recommendation", and
+ * Felfernig, A. et al - "Personalized Diagnosis for Over-Constrained Problems".
+ * Glossary:
+ * eib: Equal-is-Better
+ * nib: Nearer-is-Better
+ * mib: More-is-Better
+ * lib: Less-is-Better
  */
 public final class SimilarityMetrics {
 
     private SimilarityMetrics() {
+    }
+
+    public static double calculate(Map.Entry<String, Integer> userReqAttribute, int entryValue,
+                                   AttributeInfo attributeInfo) {
+        switch (attributeInfo.metric()) {
+            case "EIB":
+                return SimilarityMetrics.eib(userReqAttribute.getValue(), entryValue);
+            case "LIB":
+                return SimilarityMetrics.lib(entryValue,
+                        attributeInfo.minValue(), attributeInfo.maxValue());
+            case "MIB":
+                return SimilarityMetrics.mib(entryValue,
+                        attributeInfo.minValue(), attributeInfo.maxValue());
+            case "NIB":
+                return SimilarityMetrics.nib(userReqAttribute.getValue(), entryValue,
+                        attributeInfo.minValue(), attributeInfo.maxValue());
+            default:
+                throw new RuntimeException("Unexpected attribute-level similarity metric: " +
+                        attributeInfo.metric());
+        }
     }
 
     public static double eib(double userRequeriment, double entryValue) {
@@ -29,23 +54,4 @@ public final class SimilarityMetrics {
         return (max - entryValue)/(max - min);
     }
 
-    public static double calculateSimilarity(Map.Entry<String, Integer> userReqAttribute, int entryValue,
-                                             Map<String, AttributeInfo> attributeInfo) {
-        switch (attributeInfo.get(userReqAttribute.getKey()).measure) {
-            case "EIB":
-                return SimilarityMetrics.eib(userReqAttribute.getValue(), entryValue);
-            case "LIB":
-                return SimilarityMetrics.lib(entryValue,
-                        attributeInfo.get(userReqAttribute.getKey()).min, attributeInfo.get(userReqAttribute.getKey()).max);
-            case "MIB":
-                return SimilarityMetrics.mib(entryValue,
-                        attributeInfo.get(userReqAttribute.getKey()).min, attributeInfo.get(userReqAttribute.getKey()).max);
-            case "NIB":
-                return SimilarityMetrics.nib(userReqAttribute.getValue(), entryValue,
-                        attributeInfo.get(userReqAttribute.getKey()).min, attributeInfo.get(userReqAttribute.getKey()).max);
-            default:
-                throw new IllegalStateException("Unexpected attribute measure value: " +
-                        attributeInfo.get(userReqAttribute.getKey()).measure);
-        }
-    }
 }

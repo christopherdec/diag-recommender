@@ -4,6 +4,8 @@ import com.example.computerconfiguration.base.CarLoader;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -19,12 +21,23 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 **/
 public class CarDiagnosticTest {
 
-    Model model = new Model("Car");
-    IntVar type = model.intVar("type", 1, 4);
-    IntVar fuel = model.intVar("fuel", new int[]{4, 6, 10});
-    BoolVar skibag = model.boolVar("skibag");
-    BoolVar fourWheel = model.boolVar("fourWheel");
-    BoolVar pdc = model.boolVar("pdc");
+    private Model model;
+    private IntVar type;
+    private IntVar fuel;
+    private BoolVar skibag;
+    private BoolVar fourWheel;
+    private BoolVar pdc;
+
+    private QXHelper qxHelper;
+
+    private void resetModel() {
+        model = new Model("Car");
+        type = model.intVar("type", 1, 4);
+        fuel = model.intVar("fuel", new int[]{4, 6, 10});
+        skibag = model.boolVar("skibag");
+        fourWheel = model.boolVar("fourWheel");
+        pdc = model.boolVar("pdc");
+    }
 
     private List<ConstraintWrapper> getBackgroundConstraints() {
         return Arrays.asList(
@@ -46,12 +59,26 @@ public class CarDiagnosticTest {
         );
     }
 
-    @Test
-    void findDiagnosticsWithRecommendation() {
-        PDiagAdvisor.setDomain(CarLoader.getInstance());
-        QXHelper qxHelper = new QXHelper(model);
+    @BeforeEach
+    void reset() {
+        PDiagAdvisor.setLoader(CarLoader.getInstance());
+        resetModel();
+        qxHelper = new QXHelper(model);
         qxHelper.addKnowledgeBaseCstr(getBackgroundConstraints());
         qxHelper.addUserRequirementCstr(getUserRequirements());
+    }
+
+    @Test
+    void conventionalDiagnosis() {
+        List<Diagnostic> diagnoses = qxHelper.findDiagnoses(false);
+        // abaixo é o que foi obtido no artigo, porém o primeiro CS calculado pelo nosso quickxplain é diferente
+        // por isso o diagnóstico sem recomendação é imprevisível
+//        assertEquals("[[c6, c8], [c6, c9], [c7, c8]]", diagnoses.toString());
+        assertEquals(3, diagnoses.size());
+    }
+
+    @Test
+    void similarityBased() {
         List<Diagnostic> diagnoses = qxHelper.findDiagnoses(true);
         assertEquals(3, diagnoses.size());
         assertTrue(diagnoses.get(0).toString().contains("c6"));
@@ -64,16 +91,17 @@ public class CarDiagnosticTest {
     }
 
     @Test
-    void findDiagnosticsWithoutRecommendation() {
-        PDiagAdvisor.setDomain(CarLoader.getInstance());
-        QXHelper qxHelper = new QXHelper(model);
-        qxHelper.addKnowledgeBaseCstr(getBackgroundConstraints());
-        qxHelper.addUserRequirementCstr(getUserRequirements());
-        List<Diagnostic> diagnoses = qxHelper.findDiagnoses(false);
-        // abaixo é o que foi obtido no artigo, porém o primeiro CS calculado pelo nosso quickxplain é diferente
-        // por isso o diagnóstico sem recomendação é imprevisível
-//        assertEquals("[[c6, c8], [c6, c9], [c7, c8]]", diagnoses.toString());
+    void utilityBased() {
+        PDiagAdvisor.setApproach("utility");
+        List<Diagnostic> diagnoses = qxHelper.findDiagnoses(true);
         assertEquals(3, diagnoses.size());
+        assertTrue(diagnoses.get(0).toString().contains("c6"));
+        assertTrue(diagnoses.get(0).toString().contains("c9"));
+        assertTrue(diagnoses.get(1).toString().contains("c7"));
+        assertTrue(diagnoses.get(1).toString().contains("c8"));
+        assertTrue(diagnoses.get(2).toString().contains("c6"));
+        assertTrue(diagnoses.get(2).toString().contains("c8"));
     }
+
 
 }
