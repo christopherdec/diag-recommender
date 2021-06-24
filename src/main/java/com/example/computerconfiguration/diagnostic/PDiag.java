@@ -27,8 +27,9 @@ public class PDiag {
         return new PDiag(model, qxHelper);
     }
 
-    public List<Diagnostic> pDiag(List<Constraint> testConstraints, List<Constraint> auxiliaryConstraints, boolean withRecommendation) {
-        return pDiag(new ArrayList<>(), testConstraints, auxiliaryConstraints, withRecommendation);
+    public List<Diagnostic> pDiag(List<Constraint> testConstraints, List<Constraint> auxiliaryConstraints,
+                                  ComparisonApproach approach) {
+        return pDiag(new ArrayList<>(), testConstraints, auxiliaryConstraints, approach);
     }
 
     /**
@@ -43,7 +44,7 @@ public class PDiag {
      *
      */
     public List<Diagnostic> pDiag(List<Constraint> backgroundConstraints, List<Constraint> userRequirements,
-                                  List<Constraint> auxiliaryConstraints, boolean withRecommendation) {
+                                  List<Constraint> auxiliaryConstraints, ComparisonApproach approach) {
 
         List<Diagnostic> diagnoses = new ArrayList<>();
         Queue<List<Constraint>> pathQueue;
@@ -53,14 +54,14 @@ public class PDiag {
         List<Constraint> conflictSet = QuickXplain.getInstance(model, auxiliaryConstraints)
                                             .qx(backgroundConstraints, userRequirements);
         System.out.printf("Conflict Set %d: %s\n", conflictNumber++, conflictSet);
-        if (withRecommendation) {
-            advisor = new PDiagAdvisor(userRequirements);
-            pathQueue = new PriorityQueue<>(advisor);
-
-            pathQueue.addAll(conflictSet.stream().map(Arrays::asList).collect(Collectors.toList()));
+        if (approach.equals(ComparisonApproach.CONVENTIONAL)) {
+            pathQueue = new LinkedList<>();
         } else {
-            pathQueue = conflictSet.stream().map(Arrays::asList).collect(Collectors.toCollection(LinkedList::new));
+            advisor = new PDiagAdvisor(userRequirements, approach);
+            pathQueue = new PriorityQueue<>(advisor);
         }
+        pathQueue.addAll(conflictSet.stream().map(Arrays::asList).collect(Collectors.toList()));
+
         while (!pathQueue.isEmpty()) {
 
             if(diagnosticNumber > maxDiagnosis) { break; }
@@ -76,7 +77,7 @@ public class PDiag {
 
                 System.out.printf("Diagnostic %d: %s\n", diagnosticNumber++, path);
 
-                if (advisor != null) {
+                if (approach.equals(ComparisonApproach.SIMILARITY)) {
                     diagnoses.add(new Diagnostic(path, advisor.getMaxSimilarityValue(path)));
                 } else {
                     diagnoses.add(new Diagnostic(path));

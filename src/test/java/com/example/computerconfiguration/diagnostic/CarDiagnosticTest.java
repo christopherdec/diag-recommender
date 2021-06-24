@@ -4,7 +4,6 @@ import com.example.computerconfiguration.base.CarLoader;
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -70,7 +69,7 @@ public class CarDiagnosticTest {
 
     @Test
     void conventionalDiagnosis() {
-        List<Diagnostic> diagnoses = qxHelper.findDiagnoses(false);
+        List<Diagnostic> diagnoses = qxHelper.findDiagnoses();
         // abaixo é o que foi obtido no artigo, porém o primeiro CS calculado pelo nosso quickxplain é diferente
         // por isso o diagnóstico sem recomendação é imprevisível
 //        assertEquals("[[c6, c8], [c6, c9], [c7, c8]]", diagnoses.toString());
@@ -79,7 +78,7 @@ public class CarDiagnosticTest {
 
     @Test
     void similarityBased() {
-        List<Diagnostic> diagnoses = qxHelper.findDiagnoses(true);
+        List<Diagnostic> diagnoses = qxHelper.findDiagnoses(ComparisonApproach.SIMILARITY);
         assertEquals(3, diagnoses.size());
         assertTrue(diagnoses.get(0).toString().contains("c6"));
         assertTrue(diagnoses.get(0).toString().contains("c9"));
@@ -92,8 +91,7 @@ public class CarDiagnosticTest {
 
     @Test
     void utilityBased() {
-        PDiagAdvisor.setApproach("utility");
-        List<Diagnostic> diagnoses = qxHelper.findDiagnoses(true);
+        List<Diagnostic> diagnoses = qxHelper.findDiagnoses(ComparisonApproach.UTILITY);
         assertEquals(3, diagnoses.size());
         assertTrue(diagnoses.get(0).toString().contains("c6"));
         assertTrue(diagnoses.get(0).toString().contains("c9"));

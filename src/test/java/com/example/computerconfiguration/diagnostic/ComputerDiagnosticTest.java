@@ -138,7 +138,7 @@ public class ComputerDiagnosticTest {
     }
 
     @Test
-    public void hsTreeWithoutRecommendation() {
+    public void conventionalDiagnosis() {
         QXHelper qxHelper = new QXHelper(model);
         qxHelper.addKnowledgeBaseCstr(getBackgroundConstraints());
 
@@ -147,13 +147,13 @@ public class ComputerDiagnosticTest {
         qxHelper.addUserRequirementCstr(placaVideo.eq(TRUE).decompose(), "r3");
         qxHelper.addUserRequirementCstr(driveOptico.eq(TRUE).decompose(), "r4");
 
-        List<Diagnostic> diagnoses = qxHelper.findDiagnoses(false);
+        List<Diagnostic> diagnoses = qxHelper.findDiagnoses();
 
         assertFalse(diagnoses.isEmpty());
     }
 
     @Test
-    public void hsTreeWithRecommendation() {
+    public void similarityBasedDiagnosis() {
 
         QXHelper qxHelper = new QXHelper(model);
         qxHelper.addKnowledgeBaseCstr(getBackgroundConstraints());
@@ -165,13 +165,13 @@ public class ComputerDiagnosticTest {
 
         PDiag.setMaxDiagnosis(10);
 
-        List<Diagnostic> diagnoses = qxHelper.findDiagnoses(true);
+        List<Diagnostic> diagnoses = qxHelper.findDiagnoses(ComparisonApproach.SIMILARITY);
 
         assertFalse(diagnoses.isEmpty());
     }
 
     @Test
-    void similarityTableTest() throws Throwable {
+    void similarityTableTest() {
         Constraint c1 = uso.eq(Uso.GAMES.getValue()).decompose();
         Constraint c2 = processador.eq(Processador.DUAL_CORE.getValue()).decompose();
         Constraint c3 = gabinete.eq(Gabinete.MINI.getValue()).decompose();
@@ -191,8 +191,7 @@ public class ComputerDiagnosticTest {
     }
 
     @Test
-    public void configurationScreenPlanning() throws Throwable {
-
+    public void interactiveConfigurationSimilarityDiagnosis() throws Throwable {
         // usuário faz a primeira seleção
         ComputerModel.addUserRequirement("uso", Uso.DESENVOLVIMENTO.getValue());
 
@@ -223,7 +222,7 @@ public class ComputerDiagnosticTest {
         qxHelper.addKnowledgeBaseCstr(computerModel.knowledgeBaseConstraints);
         qxHelper.addUserRequirementCstr(computerModel.userRequirementConstraints);
 
-        List<Diagnostic> diagnoses = qxHelper.findDiagnoses(true);
+        List<Diagnostic> diagnoses = qxHelper.findDiagnoses(ComparisonApproach.SIMILARITY);
 
         assertEquals(2, diagnoses.size());
         assertTrue(diagnoses.get(0).getPathString().contains("uso = básico"));
@@ -231,7 +230,7 @@ public class ComputerDiagnosticTest {
     }
 
     @Test // esta situação é usada como exemplo na minha monografia
-    public void hsTreeWithRecommendationWithMoreDiagnosis() {
+    public void complexSimilarityBasedDiagnosis() {
 
         QXHelper qxHelper = new QXHelper(model);
         qxHelper.addKnowledgeBaseCstr(getBackgroundConstraints());
@@ -250,7 +249,7 @@ public class ComputerDiagnosticTest {
         qxHelper.addUserRequirementCstr(r5, "r5");
         qxHelper.addUserRequirementCstr(r6, "r6");
 
-        List<Diagnostic> diagnoses = qxHelper.findDiagnoses(true);
+        List<Diagnostic> diagnoses = qxHelper.findDiagnoses(ComparisonApproach.SIMILARITY);
         assertFalse(diagnoses.isEmpty());
     }
 

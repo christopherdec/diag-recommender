@@ -16,25 +16,24 @@ public class PDiagAdvisor implements Comparator<List<Constraint>> {
 
     private static final boolean PRINT = true;
 
-    private static String approach = "similarity";
-
-    private final ConfigurationBase configurationBase;
-
     private static ConfigurationLoader loader;
+
+    private final ComparisonApproach approach;
+
+    private ConfigurationBase configurationBase;
 
     public static void setLoader(ConfigurationLoader loader) {
         PDiagAdvisor.loader = loader;
     }
 
-    public static void setApproach(String approach) {
-        PDiagAdvisor.approach = approach;
-    }
-
-    public PDiagAdvisor(List<Constraint> userRequirements) {
-        if (loader == null) {
-            loader = ComputerLoader.getInstance();
+    public PDiagAdvisor(List<Constraint> userRequirements, ComparisonApproach approach) {
+        this.approach = approach;
+        if (!approach.equals(ComparisonApproach.CONVENTIONAL)) {
+            if (loader == null) {
+                loader = ComputerLoader.getInstance();
+            }
+            configurationBase = new ConfigurationBase(userRequirements, loader);
         }
-        configurationBase = new ConfigurationBase(userRequirements, loader);
     }
 
     @Override
@@ -42,21 +41,20 @@ public class PDiagAdvisor implements Comparator<List<Constraint>> {
         double path1Result;
         double path2Result;
         switch (approach) {
-            case "similarity":
+            case SIMILARITY:
                 path1Result = configurationBase.maxSimilarityQuery(path1);
                 path2Result = configurationBase.maxSimilarityQuery(path2);
                 break;
-            case "utility":
+            case UTILITY:
                 path1Result = configurationBase.utilityQuery(path1);
                 path2Result = configurationBase.utilityQuery(path2);
                 break;
-            case "quantity":
+            case QUANTITY:
                 path1Result = configurationBase.maxReplicationsQuery(path1);
                 path2Result = configurationBase.maxReplicationsQuery(path2);
                 break;
-            // @TODO: case "probability", case "ensemble"
             default:
-                throw new RuntimeException("Comparison approach '" + approach + "' is not defined in PDiagAvisor");
+                throw new RuntimeException("Approach '" + approach.name() + "' not defined in PDiagAdvisor");
         }
         if (PRINT) {
             System.out.print("Path 1: not{ ");
@@ -72,4 +70,5 @@ public class PDiagAdvisor implements Comparator<List<Constraint>> {
     public double getMaxSimilarityValue(List<Constraint> path) {
         return configurationBase.maxSimilarityQuery(path);
     }
+
 }

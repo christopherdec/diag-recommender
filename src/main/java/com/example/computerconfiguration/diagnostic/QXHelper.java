@@ -79,10 +79,14 @@ public class QXHelper {
         return result;
     }
 
-    public List<Diagnostic> findDiagnoses(boolean withRecommendation) {
+    public List<Diagnostic> findDiagnoses() {
+        return findDiagnoses(ComparisonApproach.CONVENTIONAL);
+    }
+
+    public List<Diagnostic> findDiagnoses(ComparisonApproach approach) {
         postConstraints();
         List<Diagnostic> diagnoses = PDiag.getInstance(model, this).pDiag(getKnowledgeBaseCstrs(), getUserRequerimentCstrs(),
-                auxiliaryConstraints, withRecommendation);
+                auxiliaryConstraints, approach);
         for(Diagnostic diagnostic : diagnoses) {
             for(ConstraintWrapper cw : userRequirementContraints) {
                 if(diagnostic.getPath().contains(cw.getConstraint())) {

@@ -108,7 +108,7 @@ public class ExampleDiagnosticTest {
         qxHelper.addUserRequirementCstr(sCPU.add(diamondMB).le(1).decompose(), "c4");
         qxHelper.addUserRequirementCstr(dCPU.eq(FALSE).decompose(), "c5");
 
-        assertEquals("[[c1], [c5], [c2, c4]]", qxHelper.findDiagnoses(false).toString());
+        assertEquals("[[c1], [c5], [c2, c4]]", qxHelper.findDiagnoses().toString());
     }
 
     @Test

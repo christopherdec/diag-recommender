@@ -1,6 +1,7 @@
 package com.example.computerconfiguration.service;
 
 import com.example.computerconfiguration.base.ComputerBase;
+import com.example.computerconfiguration.diagnostic.ComparisonApproach;
 import com.example.computerconfiguration.diagnostic.Diagnostic;
 import com.example.computerconfiguration.diagnostic.QXHelper;
 import com.example.computerconfiguration.domain.computer.Computer;
@@ -31,7 +32,7 @@ public class ConfigurationService {
             QXHelper qxHelper = new QXHelper(computerModel.model);
             qxHelper.addKnowledgeBaseCstr(computerModel.knowledgeBaseConstraints);
             qxHelper.addUserRequirementCstr(computerModel.userRequirementConstraints);
-            diagnoses = qxHelper.findDiagnoses(true);
+            diagnoses = qxHelper.findDiagnoses(ComparisonApproach.SIMILARITY);
             return Diagnostic.updateRelevances(diagnoses);
         }
         return new ArrayList<>();
