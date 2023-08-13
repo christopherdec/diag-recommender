@@ -2,7 +2,7 @@
 
 PoC app for a constraint-based computer configurator, which demonstrates the technique of recommending diagnoses based on the similarity of the current configuration with previosly completed ones.
 
-Made during an internship at the WEG company, this project served as my undergraduate thesis.
+Made during an internship at the WEG company, this project was part of my undergraduate thesis.
 
 #### Main reference
 https://www.researchgate.net/publication/236031820_Personalized_Diagnosis_for_Over-Constrained_Problems
